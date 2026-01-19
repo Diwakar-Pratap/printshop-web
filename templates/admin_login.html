@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Shop Admin Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #1f2937, #111827);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .login-container {
+            width: 360px;
+            background: #111827;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .login-container h1 {
+            margin: 0 0 8px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .login-container p {
+            margin: 0 0 24px;
+            font-size: 14px;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #d1d5db;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: #1f2937;
+            color: #ffffff;
+        }
+
+        .form-group input::placeholder {
+            color: #6b7280;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: none;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .footer span {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h1>Print Shop Admin</h1>
+    <p>Secure access for store operator</p>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="password">Admin Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter admin password"
+                required
+            >
+        </div>
+
+        <button class="login-btn" type="submit">
+            Sign In
+        </button>
+    </form>
+
+    <div class="footer">
+        <span>Xerox & Print Management System</span>
+    </div>
+</div>
+
+</body>
+</html>

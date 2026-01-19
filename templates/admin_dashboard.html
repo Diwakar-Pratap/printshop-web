@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Print Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        header {
+            background: #111827;
+            color: #ffffff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        header span {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .container {
+            padding: 24px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .top-section {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .qr-box {
+            text-align: center;
+        }
+
+        .qr-box img {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            background: #ffffff;
+        }
+
+        .qr-box p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 12px;
+        }
+
+        .printer-settings label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .printer-settings select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+        }
+
+        .jobs-section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        thead {
+            background: #111827;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .job-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .print-btn {
+            padding: 8px 14px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .print-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        @media (max-width: 900px) {
+            .top-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Print Shop Admin Dashboard</h1>
+    <span>Live print job management</span>
+</header>
+
+<div class="container">
+
+    <!-- TOP SECTION -->
+    <div class="top-section">
+
+        <!-- QR CODE -->
+        <div class="card qr-box">
+            <h2>Customer QR Code</h2>
+            <img src="{{ url_for('static', filename='qr_codes/' ~ qr) }}" alt="Customer QR Code">
+            <p>Customers scan this QR to upload print files</p>
+        </div>
+
+        <!-- PRINTER SETTINGS -->
+        <div class="card printer-settings">
+            <h2>Printer Settings</h2>
+
+            <label>Select Printer</label>
+            <select>
+                {% for printer in printers %}
+                <option value="{{ printer }}">{{ printer }}</option>
+                {% endfor %}
+            </select>
+
+            <p class="job-meta" style="margin-top:12px;">
+                Printer selection can be changed before printing each job.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- JOBS SECTION -->
+    <div class="jobs-section">
+        <h2>Incoming Print Jobs</h2>
+
+        {% if jobs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>File</th>
+                    <th>Copies</th>
+                    <th>Print Type</th>
+                    <th>Color</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for j in jobs %}
+                <tr>
+                    <td>{{ j[1] }}</td>
+                    <td>{{ j[2] }}</td>
+                    <td>{{ j[3] }}</td>
+                    <td>{{ j[4] }}</td>
+                    <td>{{ j[5] }}</td>
+                    <td class="job-meta">{{ j[6] }}</td>
+                    <td>
+                        <form method="POST" action="/print">
+    <input type="hidden" name="job_id" value="{{ j[0] }}">
+
+    <select name="printer" required>
+        {% for printer in printers %}
+        <option value="{{ printer }}">{{ printer }}</option>
+        {% endfor %}
+    </select>
+
+    <button class="print-btn" type="submit">
+        Print
+    </button>
+</form>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="card empty">
+            No print jobs yet. Waiting for customers…
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        Xerox & Print Management System — Admin Panel
+    </footer>
+
+</div>
+
+</body>
+</html>
