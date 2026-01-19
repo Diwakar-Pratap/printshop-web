@@ -1,7 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import os, sqlite3, uuid
 import qrcode
-import win32print, win32api
+import os
+
+IS_WINDOWS = os.name == "nt"
+
+if IS_WINDOWS:
+    import win32print
+    import win32api
+
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
