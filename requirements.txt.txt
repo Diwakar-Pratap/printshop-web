@@ -1,5 +1,0 @@
-pywin32
-flask
-qrcode
-pillow
-gunicorn
