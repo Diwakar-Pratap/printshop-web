@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-import os, sqlite3, uuid
+
+import  sqlite3, uuid
 import qrcode
 import os
+from flask import Flask, render_template, request, redirect, session
 
 IS_WINDOWS = os.name == "nt"
 
 if IS_WINDOWS:
     import win32print
     import win32api
+
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -148,6 +150,9 @@ def customer_upload():
 
 @app.route("/print", methods=["POST"])
 def print_job():
+    if not IS_WINDOWS:
+        return "Printing is disabled on cloud server", 400
+
     if not session.get("admin"):
         return redirect("/")
 
